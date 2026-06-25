@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Songwriting Notebook</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Lyric rhythm worksheet</p>
+        <h1>Songwriting Notebook</h1>
+      </div>
+      <button id="add-section-btn" class="primary-btn" type="button">Add Section</button>
+    </header>
+
+    <div class="workspace">
+      <aside class="lyrics-output-panel">
+        <label for="lyrics-output">Full Lyrics</label>
+        <textarea id="lyrics-output" readonly aria-label="Full lyrics text"></textarea>
+      </aside>
+
+      <section id="sections-list" class="sections-list" aria-label="Song sections"></section>
+    </div>
+  </main>
+
+  <template id="section-template">
+    <article class="section-card">
+      <div class="section-header">
+        <label>
+          <span>Section</span>
+          <select class="section-type">
+            <option value="Verse">Verse</option>
+            <option value="Chorus">Chorus</option>
+            <option value="Pre-Chorus">Pre-Chorus</option>
+            <option value="Bridge">Bridge</option>
+            <option value="Outro">Outro</option>
+            <option value="Custom">Custom</option>
+          </select>
+        </label>
+        <label class="section-name-wrap">
+          <span>Name</span>
+          <input class="section-name" type="text" placeholder="Section name">
+        </label>
+        <button class="secondary-btn add-line-btn" type="button">Add Line</button>
+      </div>
+      <div class="lines-list"></div>
+    </article>
+  </template>
+
+  <template id="line-template">
+    <div class="line-card">
+      <div class="line-controls">
+        <button class="ghost-btn duplicate-btn" type="button">Duplicate Pattern</button>
+        <button class="danger-btn delete-row-btn" type="button">Delete Row</button>
+      </div>
+
+      <div class="rhythm-sheet">
+        <div class="rhythm-axis" aria-label="Two bars of 4/4 rhythm guide">
+          <div class="beat strong">|1</div>
+          <div class="beat">|3</div>
+          <div class="beat strong">|1</div>
+          <div class="beat">|3</div>
+        </div>
+        <div class="lyric-grid">
+          <input class="lyric-input" type="text" placeholder="Write...">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+          <input class="lyric-input" type="text">
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
