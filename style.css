@@ -53,6 +53,12 @@ button {
   border-bottom: 2px solid var(--ink);
 }
 
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   color: var(--muted);
@@ -181,7 +187,9 @@ button:focus-visible {
   font-weight: 700;
 }
 
-#lyrics-output {
+#lyrics-output,
+#counted-lyrics-output,
+#notes-output {
   min-height: 68vh;
   resize: vertical;
   padding: 12px;
@@ -191,6 +199,14 @@ button:focus-visible {
   font-size: 14px;
   line-height: 1.5;
   white-space: pre-wrap;
+}
+
+#counted-lyrics-output {
+  min-height: 34vh;
+}
+
+#notes-output {
+  min-height: 34vh;
 }
 
 .lines-list {
@@ -308,6 +324,10 @@ button:focus-visible {
     flex-direction: column;
   }
 
+  .header-actions {
+    flex-direction: column-reverse;
+  }
+
   .workspace {
     grid-template-columns: 1fr;
   }
@@ -316,7 +336,9 @@ button:focus-visible {
     position: static;
   }
 
-  #lyrics-output {
+  #lyrics-output,
+  #counted-lyrics-output,
+  #notes-output {
     min-height: 240px;
   }
 

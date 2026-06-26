@@ -4,18 +4,42 @@ const LYRIC_PART_COUNT = 8;
 
 const sectionsList = document.querySelector("#sections-list");
 const lyricsOutput = document.querySelector("#lyrics-output");
+const countedLyricsOutput = document.querySelector("#counted-lyrics-output");
+const notesOutput = document.querySelector("#notes-output");
 const addSectionButton = document.querySelector("#add-section-btn");
+const resetLyricsButton = document.querySelector("#reset-lyrics-btn");
 const sectionTemplate = document.querySelector("#section-template");
 const lineTemplate = document.querySelector("#line-template");
 
 let state = loadState();
+
+notesOutput.addEventListener("input", () => {
+  state.notes = notesOutput.value;
+  saveState();
+});
 
 addSectionButton.addEventListener("click", () => {
   state.sections.push(createSection());
   saveAndRender();
 });
 
+resetLyricsButton.addEventListener("click", () => {
+  const shouldReset = confirm("Are you sure?");
+
+  if (!shouldReset) {
+    return;
+  }
+
+  localStorage.removeItem(STORAGE_KEY);
+  state = createDefaultState();
+  render();
+});
+
 render();
+
+function createDefaultState() {
+  return { sections: [createSection()], notes: "" };
+}
 
 // Creates a fresh section with one empty writing line.
 function createSection(type = "Verse") {
@@ -40,7 +64,7 @@ function createEmptyParts() {
 }
 
 function loadState() {
-  const fallback = { sections: [createSection()] };
+  const fallback = createDefaultState();
   const saved = localStorage.getItem(STORAGE_KEY);
 
   if (!saved) {
@@ -58,7 +82,7 @@ function loadState() {
 // Keeps older or manually edited saved data usable.
 function normalizeState(savedState) {
   if (!savedState || !Array.isArray(savedState.sections)) {
-    return { sections: [createSection()] };
+    return createDefaultState();
   }
 
   const sections = savedState.sections.map((section) => {
@@ -75,7 +99,10 @@ function normalizeState(savedState) {
     };
   });
 
-  return { sections: sections.length ? sections : [createSection()] };
+  return {
+    sections: sections.length ? sections : [createSection()],
+    notes: savedState.notes || "",
+  };
 }
 
 function normalizeLine(line) {
@@ -99,11 +126,17 @@ function saveAndRender() {
 
 function render() {
   sectionsList.innerHTML = "";
-  lyricsOutput.value = buildFullLyrics();
+  updateOutputText();
+  notesOutput.value = state.notes || "";
 
   state.sections.forEach((section) => {
     sectionsList.appendChild(renderSection(section));
   });
+}
+
+function updateOutputText() {
+  lyricsOutput.value = buildFullLyrics();
+  countedLyricsOutput.value = buildCountedLyrics();
 }
 
 function renderSection(section) {
@@ -125,7 +158,7 @@ function renderSection(section) {
   nameInput.addEventListener("input", () => {
     section.name = nameInput.value;
     saveState();
-    lyricsOutput.value = buildFullLyrics();
+    updateOutputText();
   });
 
   addLineButton.addEventListener("click", () => {
@@ -151,7 +184,7 @@ function renderLine(section, line) {
     input.addEventListener("input", () => {
       line.parts[index] = input.value;
       saveState();
-      lyricsOutput.value = buildFullLyrics();
+      updateOutputText();
     });
   });
 
@@ -179,4 +212,35 @@ function buildFullLyrics() {
       return `[${sectionTitle}]\n${lines}`;
     })
     .join("\n\n----\n\n");
+}
+
+function buildCountedLyrics() {
+  return state.sections
+    .map((section) => {
+      const sectionTitle = section.name || section.type;
+      const lines = section.lines
+        .map((line) => buildCountedLine(line.parts))
+        .join("\n");
+
+      return `[${sectionTitle}]\n${lines}`;
+    })
+    .join("\n\n----\n\n");
+}
+
+function buildCountedLine(parts) {
+  const beatGroups = [];
+
+  for (let index = 0; index < LYRIC_PART_COUNT; index += 2) {
+    const beatText = parts
+      .slice(index, index + 2)
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (beatText) {
+      beatGroups.push(`(${beatText}`);
+    }
+  }
+
+  return beatGroups.join(" ");
 }

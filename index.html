@@ -13,13 +13,22 @@
         <p class="eyebrow">Lyric rhythm worksheet</p>
         <h1>Songwriting Notebook</h1>
       </div>
-      <button id="add-section-btn" class="primary-btn" type="button">Add Section</button>
+      <div class="header-actions">
+        <button id="reset-lyrics-btn" class="danger-btn" type="button">Reset Lyrics</button>
+        <button id="add-section-btn" class="primary-btn" type="button">Add Section</button>
+      </div>
     </header>
 
     <div class="workspace">
       <aside class="lyrics-output-panel">
         <label for="lyrics-output">Full Lyrics</label>
         <textarea id="lyrics-output" readonly aria-label="Full lyrics text"></textarea>
+
+        <label for="counted-lyrics-output">Lyrics With Beat Marks</label>
+        <textarea id="counted-lyrics-output" readonly aria-label="Lyrics text with beat marks"></textarea>
+
+        <label for="notes-output">Notes</label>
+        <textarea id="notes-output" aria-label="Song notes" placeholder="Write notes..."></textarea>
       </aside>
 
       <section id="sections-list" class="sections-list" aria-label="Song sections"></section>
