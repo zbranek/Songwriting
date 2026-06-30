@@ -61,15 +61,16 @@
 
   <template id="line-template">
     <div class="line-card">
-      <div class="line-controls">
-        <button class="ghost-btn duplicate-btn" type="button">Duplicate Pattern</button>
-        <button class="danger-btn delete-row-btn" type="button">Delete Row</button>
-      </div>
-
       <div class="rhythm-sheet">
         <div class="rhythm-axis" aria-label="Two bars of 4/4 rhythm guide">
-          <div class="beat strong">|1</div>
-          <div class="beat">|3</div>
+          <div class="beat strong">
+            <span>|1</span>
+            <button class="ghost-btn duplicate-btn" type="button">Duplicate Pattern</button>
+          </div>
+          <div class="beat">
+            <span>|3</span>
+            <button class="danger-btn delete-row-btn" type="button">Delete Row</button>
+          </div>
           <div class="beat strong">|1</div>
           <div class="beat">|3</div>
         </div>
