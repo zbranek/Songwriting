@@ -51,6 +51,15 @@ function createSection(type = "Verse") {
   };
 }
 
+function copySection(section) {
+  return {
+    id: crypto.randomUUID(),
+    type: section.type,
+    name: section.name,
+    lines: section.lines.map((line) => createLine([...line.parts])),
+  };
+}
+
 // A line represents two 4/4 bars divided into free writing areas.
 function createLine(parts = createEmptyParts()) {
   return {
@@ -144,6 +153,7 @@ function renderSection(section) {
   const typeSelect = sectionNode.querySelector(".section-type");
   const nameInput = sectionNode.querySelector(".section-name");
   const addLineButton = sectionNode.querySelector(".add-line-btn");
+  const copySectionButton = sectionNode.querySelector(".copy-section-btn");
   const linesList = sectionNode.querySelector(".lines-list");
 
   typeSelect.value = section.type;
@@ -163,6 +173,11 @@ function renderSection(section) {
 
   addLineButton.addEventListener("click", () => {
     section.lines.push(createLine());
+    saveAndRender();
+  });
+
+  copySectionButton.addEventListener("click", () => {
+    state.sections.push(copySection(section));
     saveAndRender();
   });
 
